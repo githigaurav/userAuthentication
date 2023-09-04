@@ -4,7 +4,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import {Box, Button, IconButton, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
-
 function Navbar() {
   const[menu, setMenu]=useState(null)
   const handleMenu=()=>{
@@ -21,7 +20,8 @@ function Navbar() {
 
           <Box sx={{display:{xs:'none', md:'flex'}}}>
             <Button sx={{color:"white"}}>Home</Button>
-            <Button sx={{color:"white"}}>Login</Button>            
+            <Button sx={{color:"white"}}>Login</Button>    
+               
           </Box>
 
           <Box sx={{display:{xs:'flex', md:'none'}}}>
@@ -48,6 +48,7 @@ function Navbar() {
             >
                   <MenuItem>
                     <Typography  color="initial">Home</Typography>
+                    
                   </MenuItem>
               </Menu>
           </Box>
