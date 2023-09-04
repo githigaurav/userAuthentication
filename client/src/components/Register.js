@@ -33,7 +33,18 @@ function Register() {
       }
       axios.post("http://localhost:3001/user/register", values , config)
       .then((response)=>{
-        console.log(response)
+        const data=response.data.message;
+        setTimeout(()=>{
+          setOpen(true)
+        setResponse(data)
+        setTimeout(()=>{          
+          setOpen(false)
+          setResponse("")
+         
+
+        },3000)
+        },1500)
+        resetForm()
         resetForm()
       })
       .catch((error)=>{       
