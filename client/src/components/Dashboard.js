@@ -3,13 +3,15 @@ import Grid from '@mui/material/Grid'
 import { Stack, Box, Avatar, Typography, Container, Button, Table, TableContainer, TableBody, TableRow, TableCell, Tabs  } from '@mui/material'
 import Divider from '@mui/material/Divider';
 import Tab from '@mui/material/Tab';
+
 function Dashboard() {
-    const [tab, setTab]=useState(null)
+    const [tab, setTab]=useState(0)
     const handleTab=(event , newEvent)=>{
         setTab(newEvent)
     }
   return (
     <>
+    
         <Container maxWidth={'lg'} sx={{textAlign:'right', marginTop:"1rem"}}>
             <Button variant='contained'>LogOut</Button>
             
