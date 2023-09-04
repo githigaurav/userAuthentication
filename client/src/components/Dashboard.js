@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
-import { Stack, Box, Avatar, Typography, Container, Button, Table, TableContainer, TableBody, TableRow, TableCell, TableHead  } from '@mui/material'
+import { Stack, Box, Avatar, Typography, Container, Button, Table, TableContainer, TableBody, TableRow, TableCell, Tabs  } from '@mui/material'
 import Divider from '@mui/material/Divider';
-
+import Tab from '@mui/material/Tab';
 function Dashboard() {
+    const [tab, setTab]=useState(null)
+    const handleTab=(event , newEvent)=>{
+        setTab(newEvent)
+    }
   return (
     <>
         <Container maxWidth={'lg'} sx={{textAlign:'right', marginTop:"1rem"}}>
@@ -55,6 +59,16 @@ function Dashboard() {
                 </TableContainer>
               </Grid>
           </Grid> 
+         <Grid container maxWidth={'lg'} sx={{margin:'auto'}}>
+         <Tabs
+               
+               sx={{boxShadow:1, width:"100%"}}
+               value={tab}
+               onChange={handleTab}
+               >
+               <Tab label="About"/>
+               </Tabs>
+         </Grid>
               
     </>
   )
