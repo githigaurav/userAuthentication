@@ -78,4 +78,30 @@ const userReg = async function (req, res) {
 
 }
 
-module.exports = {userReg}
+const userPassDec = async function (dbPassword, password){
+        const result = await argon.verify(dbPassword,password )
+        return result;
+}
+
+const userLogin = async function (req, res){
+    const  {email , password}=req.body
+    const result = await isUserExists(email)
+    if(result.length !==0){
+        const dbPassword= result[0].password
+        const verifyPass = await  userPassDec(dbPassword, password)
+            if(verifyPass){
+                const userID=result[0]._id.toString()             
+                    const token = jwtToken({userID})
+                    res.cookie("token",token)
+                    res.status(200).json({message:"Login Successfully"})
+            }else{
+                res.status(404).json({message:"Invalid password"})
+            }
+
+    }else{
+        res.status(404).json({message:"User not found"})
+    }
+
+}
+
+module.exports = {userReg , userLogin}

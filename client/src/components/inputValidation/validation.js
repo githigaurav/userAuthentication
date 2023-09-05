@@ -6,3 +6,9 @@ export const regValidation = new yup.ObjectSchema({
         password:yup.string().required("Password is required").min(4, "Minimum 4 character is required"),
         confirm_password: yup.string().oneOf([yup.ref('password'), null], 'Passwords is not matched')
 })
+
+
+export const loginValidation = new yup.ObjectSchema({
+        email:yup.string().email("Valid Email is required").required("Email is required"),
+        password:yup.string().required("Password is required").min(4, "Minimum 4 character is required")
+})

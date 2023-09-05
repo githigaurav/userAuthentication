@@ -1,0 +1,3 @@
+500= Server Error
+409 = Already exists
+404= not found
