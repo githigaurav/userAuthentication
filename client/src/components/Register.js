@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import Stack from '@mui/material/Stack'
-import { TextField ,   Button, Alert} from '@mui/material'
+import { TextField ,   Button, Alert, Typography} from '@mui/material'
 import {useFormik} from 'formik'
 import {regValidation} from './inputValidation/validation'
 import axios from 'axios'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
+import {Link} from 'react-router-dom'
 function Register() {
   const [render , setRender]=useState("Reg")
   const [response, setResponse]=useState(null)
@@ -50,19 +51,18 @@ function Register() {
       .catch((error)=>{       
         const response = error.response.data.message
        if(response === "User already exists"){
-              setTimeout(()=>{
-                setRender("Reg")
-                setOpen(true)
-              setResponse(response)
-              setTimeout(()=>{
-                
-                setOpen(false)
-                setResponse("")
-               
+         setTimeout(() => {
+           setRender("Reg")
+           setOpen(true)
+           setResponse(response)
 
-              },3000)
-              },1500)
-              resetForm()
+           setTimeout(() => {
+             setOpen(false)
+             setResponse("")
+
+           }, 3000)
+         }, 1500)
+         resetForm()
        }
 
       })
@@ -110,6 +110,7 @@ function Register() {
                />
                 {formik.touched.confirm_password && formik.errors.confirm_password ? <Alert severity='error' variant='text' sx={{color:'#cc3300'}}>{formik.errors.confirm_password}</Alert> : null}
                <Button variant='contained' onClick={formik.handleSubmit}>SignUP</Button>
+               <Typography textAlign={"center"}>Already have an account ? <Link to="/login">Login</Link></Typography>
               
                
               </Stack>
@@ -119,16 +120,16 @@ function Register() {
     
               </Stack> : null
               }
-       <Snackbar 
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="error">
-          {response}
-        </Alert>
-      </Snackbar>
+              <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert onClose={handleClose} severity="error">
+                  {response}
+                </Alert>
+              </Snackbar>
     </>
   )
 }

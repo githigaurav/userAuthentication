@@ -1,5 +1,6 @@
-import { Button, Stack, TextField } from '@mui/material'
+import { Button, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Login() {
   return (
@@ -18,6 +19,8 @@ function Login() {
             <Button
             variant='contained'
             >Login</Button>
+            <Typography textAlign={'center'}>Don't have an account ? <Link to="/register">SignUp</Link></Typography>
+
         </Stack>
 
     </>
