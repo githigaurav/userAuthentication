@@ -7,6 +7,7 @@ import axios from 'axios'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import {Link, useNavigate} from 'react-router-dom'
+import Navbar from './Navbar'
 function Register() {
   const navigate =useNavigate()
   const [render , setRender]=useState("Reg")
@@ -77,6 +78,7 @@ function Register() {
   // console.log(formik.errors)
   return (
     <>
+    <Navbar/>
                {render === "Reg" ? 
               <Stack maxWidth={'md'} sx={{padding:1, gap:1 , height:'100svh', justifyContent:'center' , margin:'auto'}}>
               <TextField

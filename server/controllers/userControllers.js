@@ -103,5 +103,21 @@ const userLogin = async function (req, res){
     }
 
 }
+const findUser =  async function (userID){
+    return await dbUser.findById(userID)
+}
 
-module.exports = {userReg , userLogin}
+const userInfo= async function (req, res){
+    const userID=req.data
+    const result = await findUser(userID)
+    if(result.length !==0){
+
+     const {password , __v, _id,  ...rest } = result._doc;
+    
+       res.status(200).json({rest})
+        
+    }
+    
+}
+
+module.exports = {userReg , userLogin, userInfo}

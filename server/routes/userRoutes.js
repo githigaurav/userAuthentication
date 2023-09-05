@@ -2,7 +2,7 @@ const express = require('express')
 const userRoute= express.Router()
 
 // user Controllers
-const {userReg, userLogin}= require("./../controllers/userControllers")
+const {userReg, userLogin, userInfo}= require("./../controllers/userControllers")
 
 // middleware
 const {verifyUser} = require("./../middleware/verify")
@@ -16,7 +16,8 @@ userRoute.post("/login", (req , res)=>{
 })
 
 userRoute.get("/info",verifyUser,(req, res)=>{
-    res.end("done")
+    userInfo(req, res)
+    
 })
 
 

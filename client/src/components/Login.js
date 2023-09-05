@@ -7,6 +7,7 @@ import axios from 'axios'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import { useNavigate } from 'react-router-dom'
+import Navbar from './Navbar'
 
 function Login() {
   const navigate =useNavigate()
@@ -14,6 +15,8 @@ function Login() {
   const [response, setResponse]=useState(null)
   const [open, setOpen] = useState(false);
   const [toast, setToast]=useState(null)
+
+
 
   const handleClose = () => {
     setOpen(false);
@@ -92,6 +95,7 @@ function Login() {
   })
   return (
     <>
+    <Navbar/>
     {status === "Login" ? 
      <Stack maxWidth={'md'} sx={{padding:1, gap:1 , height:'100svh', justifyContent:'center' , margin:'auto'}}>
      <TextField
