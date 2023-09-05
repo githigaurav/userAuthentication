@@ -1,14 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import { Stack, Box, Avatar, Typography, Container, Button, Table, TableContainer, TableBody, TableRow, TableCell, Tabs  } from '@mui/material'
 import Divider from '@mui/material/Divider';
 import Tab from '@mui/material/Tab';
+import axios from 'axios'
 
 function Dashboard() {
     const [tab, setTab]=useState(0)
     const handleTab=(event , newEvent)=>{
         setTab(newEvent)
     }
+
+
+useEffect(()=>{
+    axios.get("http://localhost:3001/user/info",{withCredentials:true})
+    .then((data)=>{
+        console.log(data)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+})
   return (
     <>
     

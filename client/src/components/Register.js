@@ -6,11 +6,13 @@ import {regValidation} from './inputValidation/validation'
 import axios from 'axios'
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 function Register() {
+  const navigate =useNavigate()
   const [render , setRender]=useState("Reg")
   const [response, setResponse]=useState(null)
   const [open, setOpen] = useState(false);
+  const [toast, setToast]=useState(null)
 
   
   const handleClose = () => {
@@ -34,6 +36,7 @@ function Register() {
       }
       axios.post("http://localhost:3001/user/register", values , config)
       .then((response)=>{
+        setToast('success')
         const data=response.data.message;
         setTimeout(()=>{
           setOpen(true)
@@ -41,14 +44,15 @@ function Register() {
         setTimeout(()=>{          
           setOpen(false)
           setResponse("")
-         
+          navigate("/dashboard")
 
         },3000)
         },1500)
         resetForm()
         resetForm()
       })
-      .catch((error)=>{       
+      .catch((error)=>{   
+        setToast('error')    
         const response = error.response.data.message
        if(response === "User already exists"){
          setTimeout(() => {
@@ -59,13 +63,15 @@ function Register() {
            setTimeout(() => {
              setOpen(false)
              setResponse("")
+          
 
            }, 3000)
          }, 1500)
          resetForm()
        }
-
+       
       })
+      setToast(null)  
     }
   })
   // console.log(formik.errors)
@@ -126,7 +132,7 @@ function Register() {
                 autoHideDuration={6000}
                 onClose={handleClose}
               >
-                <Alert onClose={handleClose} severity="error">
+                <Alert onClose={handleClose} severity={toast}>
                   {response}
                 </Alert>
               </Snackbar>
