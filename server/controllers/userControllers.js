@@ -136,7 +136,8 @@ const userUpdate = async function (req, res) {
 
     if (email) {
         const result = await isUserExists(email);
-        if (result.email !== 0) {
+      
+        if (result.length !== 0) {
             res.status(400).json({ message: "Email is already exists" });
         } else {
             const result = await userDataUpdate(userID, userData);

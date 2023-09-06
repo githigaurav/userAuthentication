@@ -20,8 +20,8 @@ const Dashboard = () => {
     const [update, setUpdate]=useState(false)
     const [updateRes, setUpdateRes]=useState(null)
     const[toast, setToast]=useState("success")
+    const[render, setRender]=useState(false)
 
-// console.log(response)
     const formik = useFormik({
       initialValues:{
         email:'',
@@ -30,37 +30,41 @@ const Dashboard = () => {
         experience:''
       },
       validationSchema:updateUser,
-      onSubmit:function(values){
+      onSubmit:function(values, {resetForm}){
           axios.put("http://localhost:3001/user/update", values, {withCredentials:true})
           .then((data)=>{
           const serverResponse = data.data.message 
-          setToast("success")                    
-          setUpdateRes(serverResponse) 
-          
+          console.log(serverResponse)
+          setToast("success")   
+          setResponse({...response, serverResponse})                 
+          setUpdateRes(serverResponse)           
           setUpdate(true)
+       
             setTimeout(()=>{
+                
                 setUpdateRes(null) 
  
                 setUpdate(false)
                 setDisable(true)
-
+                setRender((pre)=>!pre)
             },1500)
+            
           })
           .catch((error)=>{
           
-            const serverResponse = error.response.data.message                     
+            const serverResponse = error.response.data.message
+            console.log(serverResponse)                     
             setUpdateRes(serverResponse) 
             setToast("error")
             setUpdate(true)
-              setTimeout(()=>{
-                  setUpdateRes(null) 
-   
+              setTimeout(()=>{                
+                  setUpdateRes(null)   
                   setUpdate(false)
-                  setDisable(true)
-                  
+                //   setDisable(true)                  
               },1500)
-
+              
           })
+         
       }
       
     })
@@ -86,6 +90,7 @@ const Dashboard = () => {
         axios.get("http://localhost:3001/user/info", { withCredentials: true })
             .then((data) => {
                 setResponse(data.data.rest);
+                
             })
             .catch((error) => {
                 const errorMessages = ["jwt expired", "jwt must be provided", "invalid signature", "Login is required", "No token provided","Invalid token"];
@@ -98,7 +103,7 @@ const Dashboard = () => {
                     }, 3000);
                 }
             });
-    }, [navigate]);
+    }, [navigate, render]);
 
     return (
         <>
@@ -130,19 +135,19 @@ const Dashboard = () => {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell>Email</TableCell>
-                                            <TableCell>{response.email}</TableCell>
+                                            {response.data[0].email ? <TableCell>{response.data[0].email}</TableCell> : response.email ? <TableCell>{response.email}</TableCell> : null }
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Age</TableCell>
-                                            <TableCell>{response.data[0].age}</TableCell>
+                                            {response.data[0].age ? <TableCell>{response.data[0].age}</TableCell> : null}
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Location</TableCell>
-                                            <TableCell>{response.data[0].location}</TableCell>
+                                            {response.data[0].location ? <TableCell>{response.data[0].location}</TableCell> : null}
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Experience</TableCell>
-                                            <TableCell>{response.data[0].experience}</TableCell>
+                                            {response.data[0].experience ? <TableCell>{response.data[0].experience}</TableCell> : null}
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -185,7 +190,7 @@ const Dashboard = () => {
             {tab === 0 ? 
           <Container maxWidth={"lg"} sx={{backgroundColor:'#fafafa', boxShadow:1}}>
           <Stack sx={{padding:3, gap:2}}>
-              <TextField
+              {/* <TextField
                 label="email"
                 name='email'
                 placeholder='sample@gmail.com'
@@ -193,7 +198,7 @@ const Dashboard = () => {
                 onChange={formik.handleChange}
                 onBlurCapture={formik.handleBlur}
               />
-           {formik.touched.email && formik.errors.email ? <Alert severity='error' variant='text' sx={{color:'#cc3300'}}>{formik.errors.email}</Alert> : null}
+           {formik.touched.email && formik.errors.email ? <Alert severity='error' variant='text' sx={{color:'#cc3300'}}>{formik.errors.email}</Alert> : null} */}
               <TextField
                 label="Age"
                 name='age'
