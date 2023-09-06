@@ -110,14 +110,47 @@ const findUser =  async function (userID){
 const userInfo= async function (req, res){
     const userID=req.data
     const result = await findUser(userID)
-    if(result.length !==0){
+    if(result && result._doc){
 
      const {password , __v, _id,  ...rest } = result._doc;
     
-       res.status(200).json({rest})
+      return res.status(200).json({rest})
         
+    }else{
+     
+        res.clearCookie('token');
+      
+        res.status(500).json({message:"Login is required"})
+       
     }
     
 }
+const userDataUpdate= async function (userID, userData){
+    return await dbUser.findByIdAndUpdate(userID, { $set: { data: userData } })
+}
 
-module.exports = {userReg , userLogin, userInfo}
+const userUpdate = async function (req, res) {
+
+    const { email, ...userData } = req.body;
+    const userID = req.data;
+
+    if (email) {
+        const result = await isUserExists(email);
+        if (result.email !== 0) {
+            res.status(400).json({ message: "Email is already exists" });
+        } else {
+            const result = await userDataUpdate(userID, userData);
+            if (result) {
+                
+                res.status(200).json({ message: "Data Updated Successfully"});
+            }
+        }
+    } else {
+        const result = await userDataUpdate(userID, userData);
+        if (result) {          
+         
+            res.status(200).json({ message: "Data Updated Successfully"});
+        }
+    }
+}
+module.exports = {userReg , userLogin, userInfo , userUpdate}

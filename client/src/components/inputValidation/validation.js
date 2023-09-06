@@ -12,3 +12,11 @@ export const loginValidation = new yup.ObjectSchema({
         email:yup.string().email("Valid Email is required").required("Email is required"),
         password:yup.string().required("Password is required").min(4, "Minimum 4 character is required")
 })
+
+export const updateUser = new yup.ObjectSchema({
+        email:yup.string().email("Valid Email is required"),
+        age:yup.number().typeError("Age must be a number").max(60, "Over age").min(18,"You are not adult"),
+        location:yup.string().max(72, "Max 72 Character allowed"),
+        experience:yup.number().typeError("Experice must be a number").max(10, "Experice is not acceptable")
+
+})

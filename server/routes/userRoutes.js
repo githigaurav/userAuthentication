@@ -2,7 +2,7 @@ const express = require('express')
 const userRoute= express.Router()
 
 // user Controllers
-const {userReg, userLogin, userInfo}= require("./../controllers/userControllers")
+const {userReg, userLogin, userInfo,userUpdate}= require("./../controllers/userControllers")
 
 // middleware
 const {verifyUser} = require("./../middleware/verify")
@@ -19,7 +19,9 @@ userRoute.get("/info",verifyUser,(req, res)=>{
     userInfo(req, res)
     
 })
-
+userRoute.put('/update', verifyUser, (req, res)=>{
+    userUpdate(req, res)
+})
 
 
 

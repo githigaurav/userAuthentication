@@ -1,35 +1,24 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
+const verifyUser = async (req, res, next) => {
+    try {
+        const token = req.cookies.token;
 
+        if (!token) {
+            return res.status(401).json({ message: "No token provided" });
+        }
 
+        jwt.verify(token, process.env.SECKEY, (error, decoded) => {
+            if (error) {
+                return res.status(401).json({ message: "Invalid token" });
+            }
 
-const verifyUser = async function (req, res, next){
-    try{
-        // 
-    
-    const token = req.cookies.token
-    const result =  jwt.verify(token, process.env.SECKEY)
-    if(result){
-        req.data=result.userID
-        next()
-    }else{
-        res.status(400).json({message:"Login is required"})
+            req.data = decoded.userID;
+            next();
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-}
-catch(error){       
+};
 
-        res.status(400).json({message:error.message}) 
-    
-   
-}
-    // .then((data)=>{
-    //     console.log(data)
-    // })
-    // .catch((error)=>{
-    //     console.log(error + "Token")
-    // })
-}
-
-
-
-module.exports={verifyUser}
+module.exports = { verifyUser };
