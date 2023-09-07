@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 
 const verifyUser = async (req, res, next) => {
     const userIP=req.headers.usercurrentip
-    
+    const token = req.cookies.token;
    
     try {
-        const token = req.cookies.token;
+      
 
         if (!token) {
             return res.status(401).json({ message: "No token provided" });
@@ -13,6 +13,8 @@ const verifyUser = async (req, res, next) => {
 
         jwt.verify(token, process.env.SECKEY, (error, decoded) => {
             if (error) {
+                
+                res.clearCookie("token")
                 return res.status(401).json({ message: "Invalid token" });
             }
 
@@ -24,11 +26,13 @@ const verifyUser = async (req, res, next) => {
                 next();
             }
             else{
-                console.log("error no ip")
+                console.log("No ip Generated")
+                res.clearCookie("token")
                 res.status(500).json({message:"Login is required"})
             }
         });
     } catch (error) {
+        res.clearCookie("token")
         res.status(500).json({ message: error.message });
     }
 };

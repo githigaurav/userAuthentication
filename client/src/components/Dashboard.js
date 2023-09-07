@@ -89,8 +89,33 @@ const Dashboard = () => {
    
 
     useEffect( () => {
-     
-        // axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":ipdata} })
+        
+        const dashBoard = async () =>{
+            const ipdata = await userIP()
+            axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":ipdata} })
+            .then((data) => {
+                setResponse(data.data.rest);
+                
+            })
+            .catch((error) => {
+                const errorMessages = ["jwt expired", "jwt must be provided", "invalid signature", "Login is required", "No token provided","Invalid token"];
+                const response = error.response.data.message;
+                if (errorMessages.includes(response) && errorMessages) {
+                    setOpen(true);
+                    setTimeout(() => {
+                        setOpen(false);
+                        navigate("/login");
+                    }, 3000);
+                }
+            });
+
+        }
+
+        dashBoard()
+      
+        // userIP().then((data)=>{
+
+        //     axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":data} })
         //     .then((data) => {
         //         setResponse(data.data.rest);
                 
@@ -106,32 +131,14 @@ const Dashboard = () => {
         //             }, 3000);
         //         }
         //     });
-        userIP().then((data)=>{
-
-            axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":data} })
-            .then((data) => {
-                setResponse(data.data.rest);
-                
-            })
-            .catch((error) => {
-                const errorMessages = ["jwt expired", "jwt must be provided", "invalid signature", "Login is required", "No token provided","Invalid token"];
-                const response = error.response.data.message;
-                if (errorMessages.includes(response)) {
-                    setOpen(true);
-                    setTimeout(() => {
-                        setOpen(false);
-                        navigate("/login");
-                    }, 3000);
-                }
-            });
-        })
-        .catch((error)=>{
-            setOpen(true);
-            setTimeout(() => {
-                setOpen(false);
-                navigate("/login");
-            }, 3000);
-        })
+        // })
+        // .catch((error)=>{
+        //     setOpen(true);
+        //     setTimeout(() => {
+        //         setOpen(false);
+        //         navigate("/login");
+        //     }, 3000);
+        // })
 
     }, [navigate, render]);
 

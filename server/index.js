@@ -24,6 +24,7 @@ server.use("/user", userRoutes)
 
 
 PORT = process.env.PORT || 3002
+
 server.listen(PORT,()=>{
     console.log("Server Status:OK " + PORT)
 })

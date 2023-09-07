@@ -61,13 +61,18 @@ const userReg = async function (req, res) {
             if (userRegStatus && userRegStatus !== null && userRegStatus !== undefined) {
         // extracting user's Mongodb id 
                 const userID = userRegStatus._id.toString()
-        // generating jwt token for cookie
+      
                 const userIP=req.headers.usercurrentip
+                if(userIP !=='' && userIP!==undefined){
+                                     // generating jwt token for cookie
                 const token = jwtToken({ userID:userID, userIP:userIP })
-        // setting cookie in browser
-                res.cookie("token", token)
-        // sending reponse to client after successfully registration
-                res.status(200).json({ message: "User has been registered Successfully" })
+                // setting cookie in browser
+                        res.cookie("token", token)
+                // sending reponse to client after successfully registration
+                        res.status(200).json({ message: "User has been registered Successfully" })
+                }else{
+                    res.status(500).json({message:"Invalid IP Address"})
+                }
             }
         }
     }
@@ -92,11 +97,14 @@ const userLogin = async function (req, res){
         const verifyPass = await  userPassDec(dbPassword, password)
             if(verifyPass){
                 const userID=result[0]._id.toString() 
-                const userIP=req.headers.usercurrentip  
-                console.log(userIP)          
-                    const token = jwtToken({userID:userID , userIP:userIP})
+                const userIP=req.headers.usercurrentip         
+                    if(userIP !== '' && userIP !==undefined && userIP !==null){
+                        const token = jwtToken({userID:userID , userIP:userIP})
                     res.cookie("token",token)
                     res.status(200).json({message:"Login Successfully"})
+                    }else{
+                        res.status(404).json({message:"Invalid IP Address"})
+                    }
             }else{
                 res.status(404).json({message:"Invalid password"})
             }

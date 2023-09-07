@@ -32,6 +32,7 @@ function Login() {
     onSubmit: async function (values, { resetForm }) {
       const userCurrentIP = await userIP()
       console.log(userCurrentIP)
+  
       setStatus("Load")
       axios.post("http://localhost:3001/user/login", values, { withCredentials: true , headers:{"userCurrentIP":userCurrentIP} })
         .then((data) => {
@@ -58,7 +59,7 @@ function Login() {
           setToast('error')     
             const response = error.response.data.message
             
-          if (response === "Invalid password") {
+          if (response !=='' && response!==null && response !==undefined) {
            
             setResponse(response)
             setTimeout(() => {
@@ -69,23 +70,10 @@ function Login() {
                 setResponse('')
               }, 1500)
             }, 1500)
-          }
-          else if (response  === "User not found") {
-            
-            setResponse(response)
-            setTimeout(() => {
-              setStatus("Login")
-              setOpen(true)
-              setTimeout(() => {
-                setOpen(false)
-                setResponse('')
-              }, 1500)
-            }, 1500)
-            resetForm()
-          } else {
-            console.log(error)
+          }  
           
-          }
+          console.log(error)
+          resetForm()
 
         })
 

@@ -30,7 +30,8 @@ function Register() {
     },
     validationSchema:regValidation,
     onSubmit:async function(values,{resetForm}){
-      const userCurrentIP = await userIP()
+      const userCurrentIP = await userIP() 
+      console.log(userCurrentIP)  
       
       setRender("Load")
       const config={
@@ -61,7 +62,7 @@ function Register() {
       .catch((error)=>{   
         setToast('error')    
         const response = error.response.data.message
-       if(response === "User already exists"){
+       if(response !=='' && response !== undefined){
          setTimeout(() => {
            setRender("Reg")
            setOpen(true)
