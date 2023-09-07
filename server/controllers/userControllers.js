@@ -38,7 +38,7 @@ const userPassEnc= async function(password){
     }
 }
 const userReg = async function (req, res) {
-    console.log(req.body)
+ 
     try {
         const { name, email, password } = req.body
         // Checking user Exists or not
@@ -62,7 +62,8 @@ const userReg = async function (req, res) {
         // extracting user's Mongodb id 
                 const userID = userRegStatus._id.toString()
         // generating jwt token for cookie
-                const token = jwtToken({ userID })
+                const userIP=req.headers.usercurrentip
+                const token = jwtToken({ userID:userID, userIP:userIP })
         // setting cookie in browser
                 res.cookie("token", token)
         // sending reponse to client after successfully registration
@@ -90,8 +91,10 @@ const userLogin = async function (req, res){
         const dbPassword= result[0].password
         const verifyPass = await  userPassDec(dbPassword, password)
             if(verifyPass){
-                const userID=result[0]._id.toString()             
-                    const token = jwtToken({userID})
+                const userID=result[0]._id.toString() 
+                const userIP=req.headers.usercurrentip  
+                console.log(userIP)          
+                    const token = jwtToken({userID:userID , userIP:userIP})
                     res.cookie("token",token)
                     res.status(200).json({message:"Login Successfully"})
             }else{

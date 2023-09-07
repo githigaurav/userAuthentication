@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 const verifyUser = async (req, res, next) => {
+    const userIP=req.headers.usercurrentip
+    
+   
     try {
         const token = req.cookies.token;
 
@@ -13,8 +16,17 @@ const verifyUser = async (req, res, next) => {
                 return res.status(401).json({ message: "Invalid token" });
             }
 
-            req.data = decoded.userID;
-            next();
+            console.log(decoded)
+            console.log(userIP + "client IP")
+            console.log(decoded.userIP + "token ip")
+            if(decoded.userIP === userIP && userIP !=='' && userIP!==undefined){
+                req.data = decoded.userID;
+                next();
+            }
+            else{
+                console.log("error no ip")
+                res.status(500).json({message:"Login is required"})
+            }
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

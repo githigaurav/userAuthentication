@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
+import {userIP} from './userAPI'
 
 function Login() {
   const navigate =useNavigate()
@@ -29,9 +30,10 @@ function Login() {
     },
     validationSchema:loginValidation,
     onSubmit: async function (values, { resetForm }) {
-
+      const userCurrentIP = await userIP()
+      console.log(userCurrentIP)
       setStatus("Load")
-      axios.post("http://localhost:3001/user/login", values, { withCredentials: true })
+      axios.post("http://localhost:3001/user/login", values, { withCredentials: true , headers:{"userCurrentIP":userCurrentIP} })
         .then((data) => {
           setToast('success')
           const response = data.data.message

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { updateUser } from './inputValidation/validation';
 import {useFormik} from 'formik'
+import {userIP} from './userAPI'
 
 
 
@@ -85,9 +86,29 @@ const Dashboard = () => {
             navigate("/login");
         }, 1500);
     };
+   
 
-    useEffect(() => {
-        axios.get("http://localhost:3001/user/info", { withCredentials: true })
+    useEffect( () => {
+     
+        // axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":ipdata} })
+        //     .then((data) => {
+        //         setResponse(data.data.rest);
+                
+        //     })
+        //     .catch((error) => {
+        //         const errorMessages = ["jwt expired", "jwt must be provided", "invalid signature", "Login is required", "No token provided","Invalid token"];
+        //         const response = error.response.data.message;
+        //         if (errorMessages.includes(response)) {
+        //             setOpen(true);
+        //             setTimeout(() => {
+        //                 setOpen(false);
+        //                 navigate("/login");
+        //             }, 3000);
+        //         }
+        //     });
+        userIP().then((data)=>{
+
+            axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":data} })
             .then((data) => {
                 setResponse(data.data.rest);
                 
@@ -103,6 +124,15 @@ const Dashboard = () => {
                     }, 3000);
                 }
             });
+        })
+        .catch((error)=>{
+            setOpen(true);
+            setTimeout(() => {
+                setOpen(false);
+                navigate("/login");
+            }, 3000);
+        })
+
     }, [navigate, render]);
 
     return (
@@ -135,19 +165,19 @@ const Dashboard = () => {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell>Email</TableCell>
-                                            {response.data[0].email ? <TableCell>{response.data[0].email}</TableCell> : response.email ? <TableCell>{response.email}</TableCell> : null }
+                                            {/* {response.data[0].email ? <TableCell>{response.data[0].email}</TableCell> : response.email ? <TableCell>{response.email}</TableCell> : null } */}
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Age</TableCell>
-                                            {response.data[0].age ? <TableCell>{response.data[0].age}</TableCell> : null}
+                                            {/* {response.data[0].age ? <TableCell>{response.data[0].age}</TableCell> : null} */}
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Location</TableCell>
-                                            {response.data[0].location ? <TableCell>{response.data[0].location}</TableCell> : null}
+                                            {/* {response.data[0].location ? <TableCell>{response.data[0].location}</TableCell> : null} */}
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Experience</TableCell>
-                                            {response.data[0].experience ? <TableCell>{response.data[0].experience}</TableCell> : null}
+                                            {/* {response.data[0].experience ? <TableCell>{response.data[0].experience}</TableCell> : null} */}
                                         </TableRow>
                                     </TableBody>
                                 </Table>

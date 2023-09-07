@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import {Link, useNavigate} from 'react-router-dom'
 import Navbar from './Navbar'
+import {userIP} from './userAPI'
 function Register() {
   const navigate =useNavigate()
   const [render , setRender]=useState("Reg")
@@ -28,11 +29,16 @@ function Register() {
       password:''
     },
     validationSchema:regValidation,
-    onSubmit:function(values,{resetForm}){
+    onSubmit:async function(values,{resetForm}){
+      const userCurrentIP = await userIP()
+      
       setRender("Load")
       const config={
         method:"POST",
-        headers:{"Content-Type":"application/json"},
+        headers:{
+          "Content-Type":"application/json",
+          "userCurrentIP":userCurrentIP
+        },
         withCredentials:true,
       }
       axios.post("http://localhost:3001/user/register", values , config)
