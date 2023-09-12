@@ -16,9 +16,7 @@ userRoute.post("/login", (req , res)=>{
 })
 
 userRoute.get("/info",verifyUser,(req, res)=>{
-    let ip = req.headers['x-forwarded-for'] || req.remoteAddress;
-   console.log(ip)
-    userInfo(req, res)
+       userInfo(req, res)
     
 })
 userRoute.put('/update', verifyUser, (req, res)=>{

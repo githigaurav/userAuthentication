@@ -13,6 +13,18 @@ server.use(cors({
 server.use(express.json())
 server.use(cookieParser())
 
+// Application Level Middleware 
+
+// server.use((req, res , next)=>{
+//     if(req.headers.origin === "http://www.higaurav.com"){
+
+//         next()
+//     }else{
+  
+//         res.status(500).json({message:"Access Denied"})
+//     }
+// })
+
 // user Routes
 const userRoutes = require('./routes/userRoutes')
 

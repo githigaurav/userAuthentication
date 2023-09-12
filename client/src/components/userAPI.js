@@ -12,3 +12,5 @@ export const userIP = async function() {
         return error.name === 'AbortError' ? '' : null;
     }
 }
+
+export const URL="http://localhost:3001"

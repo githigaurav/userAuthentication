@@ -31,8 +31,10 @@ const Dashboard = () => {
         experience:''
       },
       validationSchema:updateUser,
-      onSubmit:function(values, {resetForm}){
-          axios.put("http://localhost:3001/user/update", values, {withCredentials:true})
+      onSubmit:async function (values, {resetForm}){
+        const userUpdateIP=await userIP()
+        console.log(userUpdateIP)
+          axios.put("http://localhost:3001/user/update", values, { withCredentials: true, headers:{"userCurrentIP":userUpdateIP} })
           .then((data)=>{
           const serverResponse = data.data.message 
           console.log(serverResponse)
@@ -92,6 +94,7 @@ const Dashboard = () => {
         
         const dashBoard = async () =>{
             const ipdata = await userIP()
+            console.log(ipdata + " useEffect")
             axios.get("http://localhost:3001/user/info", { withCredentials: true, headers:{"userCurrentIP":ipdata} })
             .then((data) => {
                 setResponse(data.data.rest);
@@ -140,7 +143,7 @@ const Dashboard = () => {
         //     }, 3000);
         // })
 
-    }, [navigate, render]);
+    }, [navigate, render, toast]);
 
     return (
         <>
